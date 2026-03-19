@@ -43,7 +43,7 @@ const HeroSection = () => {
           <div className="hidden lg:block">
             <div className="bg-card/10 backdrop-blur-sm rounded-2xl border border-primary-foreground/10 p-6 space-y-4">
               <div className="flex items-center gap-2 text-primary-foreground/60 text-xs font-medium uppercase tracking-wider">
-                <span className="w-2 h-2 rounded-full bg-green-400" />
+                <span className="w-2 h-2 rounded-full bg-accent" />
                 Единое окно обращений
               </div>
               {[

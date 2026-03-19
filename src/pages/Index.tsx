@@ -1,16 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Header from "@/components/landing/Header";
+import HeroSection from "@/components/landing/HeroSection";
+import ForWhomSection from "@/components/landing/ForWhomSection";
+import ProblemSection from "@/components/landing/ProblemSection";
+import HowItWorksSection from "@/components/landing/HowItWorksSection";
+import CapabilitiesSection from "@/components/landing/CapabilitiesSection";
+import ComparisonSection from "@/components/landing/ComparisonSection";
+import AIControlSection from "@/components/landing/AIControlSection";
+import ScenariosSection from "@/components/landing/ScenariosSection";
+import IntegrationsSection from "@/components/landing/IntegrationsSection";
+import ResultsSection from "@/components/landing/ResultsSection";
+import DecisionBlock from "@/components/landing/DecisionBlock";
+import FAQSection from "@/components/landing/FAQSection";
+import CTASection from "@/components/landing/CTASection";
+import Footer from "@/components/landing/Footer";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen bg-background">
+      <Header />
+      <HeroSection />
+      <ProblemSection />
+      <ForWhomSection />
+      <HowItWorksSection />
+      <CapabilitiesSection />
+      <ComparisonSection />
+      <AIControlSection />
+      <DecisionBlock />
+      <ScenariosSection />
+      <IntegrationsSection />
+      <ResultsSection />
+      <FAQSection />
+      <CTASection />
+      <Footer />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;

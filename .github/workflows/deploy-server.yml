@@ -1,0 +1,55 @@
+name: Deploy to hosting by password
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Install sshpass and rsync
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass rsync
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Ensure deploy folder exists
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" \
+          ssh -p "${{ secrets.SSH_PORT }}" \
+          "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+          "mkdir -p '${{ secrets.DEPLOY_PATH }}'"
+
+      - name: Upload dist to server
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" \
+          rsync -avz --delete \
+          -e "ssh -p ${{ secrets.SSH_PORT }}" \
+          dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"

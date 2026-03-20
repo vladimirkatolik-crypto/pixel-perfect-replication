@@ -25,7 +25,7 @@ const HeroSection = () => {
               <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8">
                 <a href="#cta">Запросить демо</a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base px-8">
+              <Button asChild size="lg" className="bg-primary-foreground/10 border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20 text-base px-8">
                 <a href="#cta">Показать мой кейс</a>
               </Button>
             </div>

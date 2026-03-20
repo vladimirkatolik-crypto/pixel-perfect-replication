@@ -35,15 +35,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sshpass rsync
 
-      - name: Add server to known_hosts
+      - name: Prepare SSH folder
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Ensure deploy folder exists
         run: |
           sshpass -p "${{ secrets.SSH_PASSWORD }}" \
-          ssh -p "${{ secrets.SSH_PORT }}" \
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+          -p "${{ secrets.SSH_PORT }}" \
           "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
           "mkdir -p '${{ secrets.DEPLOY_PATH }}'"
 
@@ -51,5 +51,5 @@ jobs:
         run: |
           sshpass -p "${{ secrets.SSH_PASSWORD }}" \
           rsync -avz --delete \
-          -e "ssh -p ${{ secrets.SSH_PORT }}" \
+          -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${{ secrets.SSH_PORT }}" \
           dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"

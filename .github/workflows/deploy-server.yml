@@ -42,7 +42,7 @@ jobs:
       - name: Ensure deploy folder exists
         run: |
           sshpass -p "${{ secrets.SSH_PASSWORD }}" \
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+          ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
           -p "${{ secrets.SSH_PORT }}" \
           "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
           "mkdir -p '${{ secrets.DEPLOY_PATH }}'"
@@ -51,5 +51,5 @@ jobs:
         run: |
           sshpass -p "${{ secrets.SSH_PASSWORD }}" \
           rsync -avz --delete \
-          -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${{ secrets.SSH_PORT }}" \
+          -e "ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${{ secrets.SSH_PORT }}" \
           dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"

@@ -17,7 +17,7 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b">
       <div className="container-landing flex items-center justify-between h-16 px-4 md:px-8">
         <a href="#" className="text-lg font-bold text-foreground">
-          Инбаунс<span className="text-accent">Продажа</span>
+          m4<span className="text-accent">biz</span>
         </a>
 
         <nav className="hidden md:flex items-center gap-6">

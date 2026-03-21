@@ -53,8 +53,9 @@ const CTASection = () => {
               {showForm && !submitted && (
                 <form onSubmit={handleSubmit} className="w-full space-y-3 text-left">
                   <Input required placeholder="Ваше имя" />
-                  <Input required placeholder="Телефон или Telegram" />
-                  <Textarea placeholder="Кратко опишите задачу" rows={2} />
+                  <Input required type="tel" placeholder="Номер телефона" />
+                  <Input required type="email" placeholder="Email" />
+                  <Textarea placeholder="Коротко опишите задачу" rows={2} />
                   <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
                     Отправить
                   </Button>

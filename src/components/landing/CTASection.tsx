@@ -5,17 +5,59 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Send, MessageCircle } from "lucide-react";
 
-const TELEGRAM_LINK = "https://t.me/m4biz";
-const WHATSAPP_LINK = "https://wa.me/79001234567";
+const TELEGRAM_LINK = "https://t.me/m4biz_bot";
+const WHATSAPP_LINK = "https://wa.me/79197290129";
 
 const CTASection = () => {
   const [submitted, setSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
-    toast.success("Спасибо! Мы свяжемся с вами в ближайшее время.");
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("https://prod.m4biz.online/webhook/7dc69c30-f8d2-4a60-b5ce-bd0365a16dd6", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      await response.json();
+
+      setSubmitted(true);
+      setShowForm(false);
+
+      setName("");
+      setPhone("");
+      setEmail("");
+      setMessage("");
+
+      toast.success("Спасибо! Мы свяжемся с вами в ближайшее время.");
+    } catch (err) {
+      console.error(err);
+      setError("Не удалось отправить форму. Попробуйте ещё раз.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -51,15 +93,50 @@ const CTASection = () => {
               )}
 
               {showForm && !submitted && (
-                <form onSubmit={handleSubmit} className="w-full space-y-3 text-left">
-                  <Input required placeholder="Ваше имя" />
-                  <Input required type="tel" placeholder="Номер телефона" />
-                  <Input required type="email" placeholder="Email" />
-                  <Textarea placeholder="Коротко опишите задачу" rows={2} />
-                  <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                    Отправить
-                  </Button>
-                </form>
+                  <form onSubmit={handleSubmit} className="w-full space-y-3 text-left">
+                    <Input
+                      required
+                      placeholder="Ваше имя"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+
+                    <Input
+                      required
+                      type="tel"
+                      placeholder="Номер телефона"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+
+                    <Input
+                      required
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+
+                    <Textarea
+                      placeholder="Коротко опишите задачу"
+                      rows={2}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+
+                    {error && (
+                      <p className="text-sm text-red-600">{error}</p>
+                    )}
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Отправка..." : "Отправить"}
+                    </Button>
+                  </form>
               )}
 
               {submitted && (
